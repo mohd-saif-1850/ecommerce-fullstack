@@ -8,6 +8,14 @@ const app = express()
 app.use(express.json());
 app.use(cookieParser());
 
+//Cors Handling
+app.use(
+  cors({
+    origin: "http://localhost:5173", 
+    credentials: true,
+  })
+);
+
 //Routes
 import userRoute from "./routes/user.route.js"
 
