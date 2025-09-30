@@ -1,6 +1,7 @@
 import express from "express";
 import { deleteUnverifiedUsers } from "./utils/cleanUp.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 
 const app = express()
@@ -31,6 +32,6 @@ app.use("/api/v1/users",userRoute)
 
 
 
-//Deleting User in 10 Minute
+//Deleting Unvarified User in 10 Minute
 setInterval(deleteUnverifiedUsers, 10 * 60 * 1000);
 export default app;
