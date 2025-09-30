@@ -232,4 +232,44 @@ const newAccessToken = async (req, res) => {
   }
 };
 
-export {registerUser, verifyUser, loginUser,updateUser,newAccessToken};
+const getUser = async (req, res) => {
+  try {
+    const { username, email } = req.body;
+
+    if (!(username || email)) {
+      return res.status(400).json({ error: "Please provide username or email" });
+    }
+
+    const user = await User.findOne({ $or: [{ username }, { email }] }).select("-password -refreshToken");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User fetched successfully",
+      data: user
+    });
+  } catch (err) {
+    console.error("Get user error:", err);
+    return res.status(500).json({ error: "Server error!" });
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password -refreshToken");
+
+    return res.status(200).json({
+      success: true,
+      message: "All users fetched successfully",
+      data: users
+    });
+  } catch (err) {
+    console.error("Get all users error:", err);
+    return res.status(500).json({ error: "Server error!" });
+  }
+};
+
+export {registerUser, verifyUser, loginUser,updateUser,newAccessToken, getUser, getAllUsers};
