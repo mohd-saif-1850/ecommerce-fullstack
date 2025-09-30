@@ -12,6 +12,10 @@ app.use(cookieParser());
 import userRoute from "./routes/user.route.js"
 
 
+app.get("/", (req, res) => {
+  res.send("Welcome to MS ECOMMERCE API !");
+});
+
 
 //Routes Declaring
 app.use("/api/v1/users",userRoute)
