@@ -1,0 +1,59 @@
+# Node modules
+node_modules/
+
+# Build output
+build/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.svelte-kit/
+.storybook-out/
+
+# Server logs
+logs
+*.out
+*.pid
+*.seed
+*.pid.lock
+
+# Optional lock files (if you use only one, ignore the rest)
+# Uncomment if needed
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Local databases
+*.sqlite
+*.db
+
+# Misc
+*.tgz
