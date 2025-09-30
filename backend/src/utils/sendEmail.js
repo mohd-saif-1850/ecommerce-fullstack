@@ -40,7 +40,7 @@ export const sendEmail = async (to, name, otp, subject) => {
   `;
 
   return await resend.emails.send({
-    from: "MS ECOMMERCE <onboarding@resend.dev>",
+    from: "MS ECOMMERCE <no-reply@msecommerce.tk>",
     to, 
     subject,
     html: htmlContent,

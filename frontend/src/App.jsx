@@ -10,13 +10,13 @@ function App() {
     const fetchUsers = async () => {
       try {
         const res = await fetch(
-          "https://ecommerce-fullstack-fjty.onrender.com/api/v1/users/get-all-user"
+          "https://ecommerce-fullstack-fjty.onrender.com/api/v1/users/get-all-users"
         );
         if (!res.ok) {
           throw new Error("Failed to fetch users");
         }
         const data = await res.json();
-        setUsers(data.data); // your backend returns { success, data: [...] }
+        setUsers(data.data);
         setLoading(false);
       } catch (err) {
         setError(err.message);
