@@ -5,8 +5,8 @@ import { sendEmail } from "../utils/sendEmail.js"
 import generateAccessAndRefreshToken from "../utils/tokens.js";
 import jwt from "jsonwebtoken"
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || "refreshsupersecret";
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 
 const otpStore = {}
 
@@ -272,4 +272,24 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-export {registerUser, verifyUser, loginUser,updateUser,newAccessToken, getUser, getAllUsers};
+const deleteUser = async (req,res) => {
+  const {_id} = req.user
+
+  if (!_id) {
+    return res.status(404).json({error : "You must have to Provide UserID !"})
+  }
+
+  const del = await User.findByIdAndDelete(_id)
+
+  if (!del) {
+    return res.status(500).json({error : "Server Error while Deleting the User !"})
+  }
+
+  return res.status(200).json({
+    success : true,
+    message : "User Deleted Successfully !"
+  })
+}
+
+export {registerUser, verifyUser, loginUser,updateUser,
+  newAccessToken, getUser, getAllUsers, deleteUser};
