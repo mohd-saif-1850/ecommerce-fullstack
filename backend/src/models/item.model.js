@@ -9,7 +9,7 @@ const itemSchema = new Schema({
         type : Number,
         required : true
     },
-    quanity : {
+    quantity : {
         type : Number,
         default : 1
     },
@@ -20,6 +20,9 @@ const itemSchema = new Schema({
     imageUrl : {
         type : String,
         required : true
+    },
+    invoiceNumber : {
+        type : String
     }
 },{timestamps: true})
 

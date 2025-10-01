@@ -2,7 +2,7 @@ import { Item } from "../models/item.model.js"
 import cloudinaryUpload from "../utils/cloudinary.js"
 
 const createItem = async (req, res) => {
-    const {name, price, quantity, description} = req.body
+    const {name, price, quantity, description, invoiceNumber} = req.body
     const file = req.file?.path
 
     if (!name) {
@@ -13,6 +13,9 @@ const createItem = async (req, res) => {
     }
     if (!file) {
         return res.status(404).json({error : "Image of an Item is Required !"})
+    }
+    if (invoiceNumber) {
+        return res.status(404).json({error : "Invoice Number of an Item is Required !"})
     }
 
     const uploadImage = await cloudinaryUpload(file)
@@ -26,6 +29,7 @@ const createItem = async (req, res) => {
         price,
         quantity,
         description,
+        invoiceNumber,
         imageUrl : uploadImage.secure_url
     })
 
