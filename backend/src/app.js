@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 
 //Routes Declaring
 app.use("/api/v1/users",userRoute)
-app.use("/admin",itemRoute)
+app.use("/api/v1/admin",itemRoute)
 
 
 
