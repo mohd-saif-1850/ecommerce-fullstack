@@ -44,4 +44,18 @@ const createItem = async (req, res) => {
     })
 }
 
-export { createItem }
+const getAllItems = async (req,res) => {
+    const items = await Item.find()
+
+    if (!items || items.length == 0 ) {
+        return res.status(402).json({error : "No Items Found !"})
+    }
+
+    return res.status(202).json({
+        success : true,
+        items,
+        message : "Items Fetched Successfully !"
+    })
+}
+
+export { createItem, getAllItems }
