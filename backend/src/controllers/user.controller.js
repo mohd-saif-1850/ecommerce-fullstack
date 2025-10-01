@@ -5,9 +5,6 @@ import { sendEmail } from "../utils/sendEmail.js"
 import generateAccessAndRefreshToken from "../utils/tokens.js";
 import jwt from "jsonwebtoken"
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
-
 const otpStore = {}
 
 const registerUser = async (req,res) => {
