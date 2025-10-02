@@ -1,49 +1,16 @@
-import { useState, useEffect } from "react";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./pages/Navbar";
+import Home from "./pages/Home";
+import ItemPage from "./pages/Items";
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(
-          "https://ecommerce-fullstack-fjty.onrender.com/api/v1/users/get-all-users"
-        );
-        if (!res.ok) {
-          throw new Error("Failed to fetch users");
-        }
-        const data = await res.json();
-        setUsers(data.data);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
-  if (loading) return <p>Loading users...</p>;
-  if (error) return <p>Error: {error}</p>;
-
   return (
-    <div className="App">
-      <h1>All Users</h1>
-      {users.length === 0 ? (
-        <p>No users found</p>
-      ) : (
-        <ul>
-          {users.map((user) => (
-            <li key={user._id}>
-              {user.name} ({user.username}) - {user.email}
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/items/:id" element={<ItemPage />} />
+      </Routes>
     </div>
   );
 }
