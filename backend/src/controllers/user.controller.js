@@ -26,17 +26,16 @@ const registerUser = async (req,res) => {
         return res.status(404).json({error : "Password is Required !"})
     }
 
-    const existed = await User.findOne({
-        $or : [
-            { email: email },
-            { username: username },
-            { mobile: mobile } 
-        ]
-    })
+    const existedEmail = await User.findOne({ email });
+    if (existedEmail) return res.status(400).json({ error: "Email already exists!" });
 
-    if (existed) {
-        return res.status(400).json({error : "User Already Exist with same Details !"})
-    }
+    const existedUsername = await User.findOne({ username });
+    if (existedUsername) return res.status(400).json({ error: "Username already exists!" });
+
+    const existedMobile = await User.findOne({ mobile });
+    if (existedMobile) return res.status(400).json({ error: "Mobile number already exists!" });
+
+    
 
     const hashedPassword = await bcrypt.hash(password,10)
 
