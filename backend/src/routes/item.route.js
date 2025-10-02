@@ -1,6 +1,6 @@
 import { Router } from "express";
 import verifyJWT from "../middleware/verifyJWT.js";
-import { createItem, getAllItems, searchItems } from "../controllers/item.controller.js";
+import { createItem, getAllItems, searchItems, getItemById } from "../controllers/item.controller.js";
 import { upload } from "../middleware/uploadMiddleware.js";
 import authorizeRoles from "../middleware/authorizeRoles.js";
 
