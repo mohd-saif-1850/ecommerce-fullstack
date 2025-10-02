@@ -5,7 +5,6 @@ import { sendEmail } from "../utils/sendEmail.js"
 import generateAccessAndRefreshToken from "../utils/tokens.js";
 import jwt from "jsonwebtoken"
 
-const otpStore = {}
 
 const registerUser = async (req,res) => {
     const {name,username,email,mobile,password} = req.body
@@ -36,7 +35,7 @@ const registerUser = async (req,res) => {
     if (existedMobile) return res.status(400).json({ error: "Mobile number already exists!" });
 
     
-
+    const otp = crypto.randomInt(100000,999999).toString();
     const hashedPassword = await bcrypt.hash(password,10)
 
     const create = await User.create({
@@ -44,6 +43,7 @@ const registerUser = async (req,res) => {
         username,
         email,
         mobile,
+        otp,
         password: hashedPassword,
         isVerified: false
     })
@@ -51,9 +51,6 @@ const registerUser = async (req,res) => {
     if (!create) {
         return res.status(500).json({error : "Server Failed to Create User !"})
     }
-
-    const otp = crypto.randomInt(100000,999999).toString();
-    otpStore[email] = otp;
 
     await sendEmail(
         email,
@@ -86,14 +83,12 @@ const verifyUser = async (req,res) => {
         return res.status(404).json({error: "Otp is Required !"})
     }
 
-    if (otpStore[email] && otpStore[email] === otp) {
-        await User.updateOne({email},{
-            $set : {
-                isVerified: true
-            }
-        })
-        delete otpStore[email];
-    }
+    if (User.otp === Number(otp)) { 
+    Userser.isVerified = true;
+    User.otp = null;             
+    await User.save();
+    return res.status(200).json({ success: true, message: "Email verified successfully!" });
+}
 
     return res.status(200).json({
         success: true,
