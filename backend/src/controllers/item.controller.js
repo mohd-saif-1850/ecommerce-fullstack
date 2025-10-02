@@ -79,4 +79,19 @@ const searchItems = async (req, res) => {
   }
 };
 
-export { createItem, getAllItems, searchItems };
+const getItemById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const item = await Item.findById(id);
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+    res.status(200).json({ item });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+export { createItem, getAllItems, searchItems, getItemById };

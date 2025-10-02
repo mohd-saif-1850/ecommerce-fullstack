@@ -9,6 +9,8 @@ const router = Router()
 router.route("/create-item").post(verifyJWT,authorizeRoles("admin"),upload.single("image"),createItem)
 router.route("/get-all-items").get(getAllItems)
 router.route("/search-items").get(searchItems);
+router.route("/get-item/:id").get(getItemById);
+
 
 
 export default router;
