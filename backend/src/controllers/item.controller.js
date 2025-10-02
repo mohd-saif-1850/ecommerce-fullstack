@@ -58,4 +58,25 @@ const getAllItems = async (req,res) => {
     })
 }
 
-export { createItem, getAllItems }
+const searchItems = async (req, res) => {
+  const { query } = req.query;
+
+  if (!query) return res.status(400).json({ error: "Query is required" });
+
+  try {
+    const items = await Item.find({ 
+      name: { $regex: query, $options: "i" } 
+    }).limit(5);
+
+    if (!items || items.length === 0) {
+      return res.status(404).json({ items: [], message: "No Matching Items Found !" });
+    }
+
+    res.status(200).json({ items });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+export { createItem, getAllItems, searchItems };
