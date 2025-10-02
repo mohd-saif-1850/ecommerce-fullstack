@@ -74,26 +74,23 @@ const registerUser = async (req,res) => {
 }
 
 const verifyUser = async (req,res) => {
-    const {email, otp} = req.body
+    const { email, otp } = req.body;
 
-    if (!email) {
-        return res.status(404).json({error: "Email is Required !"})
-    }
-    if (!otp) {
-        return res.status(404).json({error: "Otp is Required !"})
+    if (!email) return res.status(400).json({ error: "Email is required!" });
+    if (!otp) return res.status(400).json({ error: "OTP is required!" });
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: "User not found!" });
+
+    if (user.otp !== Number(otp)) {
+        return res.status(400).json({ error: "Invalid OTP!" });
     }
 
-    if (User.otp === Number(otp)) { 
-    Userser.isVerified = true;
-    User.otp = null;             
-    await User.save();
+    user.isVerified = true;
+    user.otp = null; // clear OTP after verification
+    await user.save();
+
     return res.status(200).json({ success: true, message: "Email verified successfully!" });
-}
-
-    return res.status(200).json({
-        success: true,
-        message: "Email Verified Successfully!"
-    });
 }
 
 const loginUser = async (req, res) => {
