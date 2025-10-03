@@ -246,13 +246,24 @@ const newAccessToken = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const { username, email } = req.body;
+    // If verifyJWT ran, req.user will already contain the authenticated user
+    if (req.user) {
+      return res.status(200).json({
+        success: true,
+        message: "Authenticated user fetched successfully",
+        data: req.user,
+      });
+    }
 
+    // Fallback: accept username/email in body (keeps old behavior)
+    const { username, email } = req.body;
     if (!(username || email)) {
       return res.status(400).json({ error: "Please provide username or email" });
     }
 
-    const user = await User.findOne({ $or: [{ username }, { email }] }).select("-password -refreshToken");
+    const user = await User.findOne({ $or: [{ username }, { email }] }).select(
+      "-password -refreshToken"
+    );
 
     if (!user) {
       return res.status(404).json({ error: "User not found!" });
@@ -261,7 +272,7 @@ const getUser = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "User fetched successfully",
-      data: user
+      data: user,
     });
   } catch (err) {
     console.error("Get user error:", err);
