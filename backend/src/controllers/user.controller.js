@@ -14,14 +14,15 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ error: "All fields are required!" });
     }
 
-    const existedEmail = await User.findOne({ email });
-    if (existedEmail) return res.status(400).json({ error: "Email already exists!" });
-
-    const existedUsername = await User.findOne({ username });
-    if (existedUsername) return res.status(400).json({ error: "Username already exists!" });
-
-    const existedMobile = await User.findOne({ mobile });
-    if (existedMobile) return res.status(400).json({ error: "Mobile number already exists!" });
+    if (await User.findOne({ email })) {
+      return res.status(400).json({ error: "Email already exists!" });
+    }
+    if (await User.findOne({ username })) {
+      return res.status(400).json({ error: "Username already exists!" });
+    }
+    if (await User.findOne({ mobile })) {
+      return res.status(400).json({ error: "Mobile number already exists!" });
+    }
 
     const otp = crypto.randomInt(100000, 999999).toString();
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -36,12 +37,12 @@ const registerUser = async (req, res) => {
       isVerified: false,
     });
 
-    try {
-      await sendEmail(email, name, otp, "Verify your MS ECOMMERCE Account");
-    } catch (err) {
-      console.error("Email failed to send:", err);
-    }
+    // Fire-and-forget email sending
+    sendEmail(email, name, otp, "Verify your MS ECOMMERCE Account")
+      .then(() => console.log(`OTP sent to ${email}`))
+      .catch(err => console.error("Email failed to send:", err));
 
+    // Respond immediately without waiting for email
     res.status(200).json({
       success: true,
       message: "User registered successfully. Check your email for OTP.",
@@ -59,6 +60,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ error: err.message || "Server error" });
   }
 };
+
 
 
 const verifyUser = async (req,res) => {
