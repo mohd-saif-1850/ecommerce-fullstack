@@ -36,7 +36,12 @@ const registerUser = async (req, res) => {
       isVerified: false,
     });
 
-    // 🚀 Respond immediately
+    try {
+      await sendEmail(email, name, otp, "Verify your MS ECOMMERCE Account");
+    } catch (err) {
+      console.error("Email failed to send:", err);
+    }
+
     res.status(200).json({
       success: true,
       message: "User registered successfully. Check your email for OTP.",
@@ -49,9 +54,6 @@ const registerUser = async (req, res) => {
         isVerified: user.isVerified,
       },
     });
-
-    // 📧 Send email AFTER response (non-blocking)
-    sendEmail(email, name, otp, "Verify your MS ECOMMERCE Account").catch(console.error);
 
   } catch (err) {
     res.status(500).json({ error: err.message || "Server error" });
