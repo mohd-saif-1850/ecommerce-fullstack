@@ -42,7 +42,6 @@ const registerUser = async (req, res) => {
       .then(() => console.log(`OTP sent to ${email}`))
       .catch(err => console.error("Email failed to send:", err));
 
-    // Respond immediately without waiting for email
     res.status(200).json({
       success: true,
       message: "User registered successfully. Check your email for OTP.",
@@ -77,7 +76,7 @@ const verifyUser = async (req,res) => {
     }
 
     user.isVerified = true;
-    user.otp = null; // clear OTP after verification
+    user.otp = null;
     await user.save();
 
     return res.status(200).json({ success: true, message: "Email verified successfully!" });
