@@ -6,23 +6,12 @@ import generateAccessAndRefreshToken from "../utils/tokens.js";
 import jwt from "jsonwebtoken"
 
 
-const registerUser = async (req,res) => {
-    const {name,username,email,mobile,password} = req.body
+const registerUser = async (req, res) => {
+  try {
+    const { name, username, email, mobile, password } = req.body;
 
-    if (!name) {
-        return res.status(404).json({error : "Name is Required !"})
-    }
-    if (!username) {
-        return res.status(404).json({error : "Username is Required !"})
-    }
-    if (!email) {
-        return res.status(404).json({error : "Email is Required !"})
-    }
-    if (!mobile) {
-        return res.status(404).json({error : "Mobile Number is Required !"})
-    }
-    if (!password) {
-        return res.status(404).json({error : "Password is Required !"})
+    if (!name || !username || !email || !mobile || !password) {
+      return res.status(400).json({ error: "All fields are required!" });
     }
 
     const existedEmail = await User.findOne({ email });
@@ -34,44 +23,41 @@ const registerUser = async (req,res) => {
     const existedMobile = await User.findOne({ mobile });
     if (existedMobile) return res.status(400).json({ error: "Mobile number already exists!" });
 
-    
-    const otp = crypto.randomInt(100000,999999).toString();
-    const hashedPassword = await bcrypt.hash(password,10)
+    const otp = crypto.randomInt(100000, 999999).toString();
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const create = await User.create({
-        name,
-        username,
-        email,
-        mobile,
-        otp,
-        password: hashedPassword,
-        isVerified: false
-    })
+    const user = await User.create({
+      name,
+      username,
+      email,
+      mobile,
+      otp,
+      password: hashedPassword,
+      isVerified: false,
+    });
 
-    if (!create) {
-        return res.status(500).json({error : "Server Failed to Create User !"})
-    }
+    // 🚀 Respond immediately
+    res.status(200).json({
+      success: true,
+      message: "User registered successfully. Check your email for OTP.",
+      data: {
+        id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        mobile: user.mobile,
+        isVerified: user.isVerified,
+      },
+    });
 
-    await sendEmail(
-        email,
-        name,
-        otp,
-        "Verify your MS ECOMMERCE Account",
-    )
+    // 📧 Send email AFTER response (non-blocking)
+    sendEmail(email, name, otp, "Verify your MS ECOMMERCE Account").catch(console.error);
 
-    return res.status(200).json({
-        success: true,
-        message: "User Registered Successfully Please Verify Your Account !",
-        data: {
-            id: create._id,
-            name: create.name,
-            username: create.username,
-            email: create.email,
-            mobile: create.mobile,
-            isVerified: create.isVerified
-        } 
-    })
-}
+  } catch (err) {
+    res.status(500).json({ error: err.message || "Server error" });
+  }
+};
+
 
 const verifyUser = async (req,res) => {
     const { email, otp } = req.body;
