@@ -8,11 +8,14 @@ dotenv.config();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const googleAuth = async (req, res) => {
-  const { tokenId } = req.body;
+  const { tokenId } = req.body; // received from frontend
+
+  if (!tokenId) return res.status(400).json({ error: "Token ID missing" });
+
   try {
     const ticket = await client.verifyIdToken({
       idToken: tokenId,
-      audience: process.env.GOOGLE_CLIENT_ID, // only client ID needed
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
@@ -20,6 +23,7 @@ export const googleAuth = async (req, res) => {
 
     let user = await User.findOne({ email });
 
+    // If first-time Google login, create user
     if (!user) {
       user = await User.create({
         name,
@@ -33,9 +37,16 @@ export const googleAuth = async (req, res) => {
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
-    res
-      .cookie("accessToken", accessToken, { httpOnly: true, sameSite: "lax" })
-      .cookie("refreshToken", refreshToken, { httpOnly: true, sameSite: "lax" })
+    // Set cookies securely
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    };
+
+    return res
+      .cookie("accessToken", accessToken, cookieOptions)
+      .cookie("refreshToken", refreshToken, cookieOptions)
       .status(200)
       .json({
         message: "Logged in with Google successfully",
@@ -45,6 +56,6 @@ export const googleAuth = async (req, res) => {
       });
   } catch (err) {
     console.error("Google Auth Error:", err);
-    res.status(500).json({ error: "Google login failed" });
+    return res.status(500).json({ error: "Google login failed" });
   }
 };
