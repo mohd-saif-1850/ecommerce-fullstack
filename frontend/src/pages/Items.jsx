@@ -16,7 +16,6 @@ const Items = () => {
           `${import.meta.env.VITE_BACKEND_URL}/admin/get-all-items`
         );
 
-        // Find the item by id
         const found = res.data.items.find((i) => i._id === id);
         setItem(found || null);
         setLoading(false);
@@ -40,7 +39,6 @@ const Items = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-5 md:p-10 flex flex-col md:flex-row gap-8">
-      {/* Image */}
       <div className="flex-1">
         {item.imageUrl ? (
           <img
@@ -55,7 +53,6 @@ const Items = () => {
         )}
       </div>
 
-      {/* Details */}
       <div className="flex-1 flex flex-col justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
@@ -66,7 +63,7 @@ const Items = () => {
           <p className="text-gray-700 dark:text-gray-200 mb-4">Quantity: {item.quantity}</p>
         </div>
 
-        <button className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-lg shadow-md transition w-full md:w-auto">
+        <button className="flex items-center cursor-pointer gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-lg shadow-md transition w-full md:w-auto">
           <ShoppingCart className="w-5 h-5" />
           Add to Cart
         </button>
