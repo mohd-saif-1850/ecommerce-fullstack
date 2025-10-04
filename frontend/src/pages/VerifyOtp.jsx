@@ -32,14 +32,14 @@ const VerifyOTP = () => {
     setInfo("");
 
     const otpValue = otp.join("");
-    if (otpValue.trim() === "") return setError("Please enter the OTP!");
+    if (otpValue.length !== 6) return setError("Please enter the 6-digit OTP!");
     if (!email) return setError("Missing email — please go back and sign up again.");
 
     setLoading(true);
     try {
       const res = await axios.patch(
         `${import.meta.env.VITE_BACKEND_URL}/users/verify-user`,
-        { email, otp: Number(otpValue) },
+        { email, otp: otpValue },
         { timeout: 20000 }
       );
 
@@ -94,10 +94,11 @@ const VerifyOTP = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 rounded-lg font-medium transition-all duration-200 ${loading
+            className={`w-full py-2 rounded-lg font-medium transition-all duration-200 ${
+              loading
                 ? "bg-cyan-500/50 cursor-not-allowed"
                 : "bg-cyan-500 hover:bg-cyan-600"
-              } text-white`}
+            } text-white`}
           >
             {loading ? (
               <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block"></span>
