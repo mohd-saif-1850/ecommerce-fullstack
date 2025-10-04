@@ -20,6 +20,7 @@ app.use(
 //Routes
 import userRoute from "./routes/user.route.js"
 import itemRoute from "./routes/item.route.js"
+import googleAuthRoute from "./routes/auth.route.js";
 
 
 app.get("/", (req, res) => {
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 //Routes Declaring
 app.use("/api/v1/users",userRoute)
 app.use("/api/v1/admin",itemRoute)
+app.use("/api/v1/auth", googleAuthRoute);
 
 
 
