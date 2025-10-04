@@ -12,7 +12,7 @@ app.use(cookieParser());
 //Cors Handling
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+    origin: ["http://localhost:5173","https://ecommerce-fullstack-pearl.vercel.app/"], 
     credentials: true,
   })
 );
