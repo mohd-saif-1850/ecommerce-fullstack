@@ -9,17 +9,21 @@ function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-all-items`);
-        setItems(res.data.items);
-      } catch (err) {
-        console.error(err);
-      }
-      setLoading(false);
-    };
-    fetchItems();
-  }, []);
+  const fetchItems = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-all-items`);
+      // Sort items: newest first
+      const sortedItems = res.data.items.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setItems(sortedItems);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
+  fetchItems();
+}, []);
 
   if (loading) return <p className="text-center mt-10 text-gray-500">Loading...</p>;
 
@@ -58,7 +62,7 @@ function Home() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">Price</p>
                 <p className="font-bold text-xl text-cyan-600">${item.price}</p>
               </div>
-              <button className="flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-lg shadow-md transition">
+              <button className="flex items-center cursor-pointer gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-lg shadow-md transition">
                 <ShoppingCart className="w-5 h-5" />
                 Add to Cart
               </button>

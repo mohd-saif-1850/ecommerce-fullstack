@@ -40,7 +40,13 @@ const userSchema = new Schema({
     role : {
         type : String,
         default : "user"
-    }
+    },
+    cart : [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Item"
+        }
+    ]
 },{timestamps: true})
 
 export const User = mongoose.model("User",userSchema);

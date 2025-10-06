@@ -64,7 +64,7 @@ const Items = () => {
         </div>
 
         <button className="flex items-center cursor-pointer gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-lg shadow-md transition w-full md:w-auto">
-          <ShoppingCart className="w-5 h-5" />
+          <ShoppingCart className="w-5 h-5 cursor-pointer" />
           Add to Cart
         </button>
       </div>

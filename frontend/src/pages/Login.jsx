@@ -4,7 +4,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
-  withCredentials: true,
+  withCredentials: true, // important to send cookies
 });
 
 const Login = () => {
@@ -29,15 +29,10 @@ const Login = () => {
       const res = await api.post("/users/login-user", payload);
 
       if (res.data?.user) {
+        // save user info locally
         localStorage.setItem("user", JSON.stringify(res.data.user));
 
-        const notif = {
-          message: "Logged in successfully",
-          type: "success",
-          ts: Date.now(),
-        };
-        localStorage.setItem("auth-notification", JSON.stringify(notif));
-        localStorage.setItem("auth-ts", notif.ts.toString());
+        // dispatch event for navbar
         window.dispatchEvent(new Event("authChanged"));
 
         navigate("/");
@@ -48,9 +43,9 @@ const Login = () => {
       console.error("Login error:", err);
       setError(
         err?.response?.data?.error ||
-          err?.response?.data?.message ||
-          err?.message ||
-          "Login failed!"
+        err?.response?.data?.message ||
+        err?.message ||
+        "Login failed!"
       );
     } finally {
       setLoading(false);

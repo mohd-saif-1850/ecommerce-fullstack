@@ -170,9 +170,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full px-4 md:px-6 py-4 flex justify-between items-center sticky top-0 z-50 bg-transparent">
+    <nav className="w-full px-4 md:px-6 py-4 flex justify-between items-center sticky top-0 z-50 bg-black/80  ">
       <div className="text-2xl font-bold text-cyan-400 cursor-pointer" onClick={() => navigate("/")}>
-        MyShop
+        MS ECOMMERCE
       </div>
 
       {/* Desktop */}
@@ -202,20 +202,20 @@ const Navbar = () => {
           )}
         </div>
 
-        <button className="text-cyan-400 hover:text-cyan-300" onClick={() => navigate("/")}>Home</button>
-        <button className="text-cyan-400 hover:text-cyan-300" onClick={() => navigate("/about")}>About</button>
-        <button className="text-cyan-400 hover:text-cyan-300" onClick={() => navigate("/contact")}>Contact</button>
+        <button className="text-cyan-400 cursor-pointer hover:text-cyan-300" onClick={() => navigate("/")}>Home</button>
+        <button className="text-cyan-400 cursor-pointer hover:text-cyan-300" onClick={() => navigate("/about")}>About</button>
+        <button className="text-cyan-400 cursor-pointer hover:text-cyan-300" onClick={() => navigate("/contact")}>Contact</button>
 
         {user ? (
           <div className="relative">
             <button onClick={handleLogout} className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white">
               Logout
             </button>
-            <Toast notification={notification} className="min-w-[180px] right-0 left-auto" />
+            <Toast notification={notification} className="min-w-[180px] cursor-pointer right-0 left-auto" />
           </div>
         ) : (
           <div className="relative">
-            <button onClick={() => navigate("/login")} className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white">
+            <button onClick={() => navigate("/login")} className="px-4 py-2 cursor-pointer bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white">
               Login / Signup
             </button>
             <Toast notification={notification} className="min-w-[180px]" />
@@ -226,10 +226,10 @@ const Navbar = () => {
       {/* Mobile */}
       <div className="md:hidden flex items-center gap-2">
         <button onClick={() => setMobileSearchOpen(!mobileSearchOpen)} className="p-2 rounded-full hover:bg-gray-700 transition">
-          <Search className="w-5 h-5 text-cyan-400" />
+          <Search className="w-5 h-5 text-cyan-400 cursor-pointer" />
         </button>
         <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 rounded-full hover:bg-gray-700 transition">
-          {mobileMenuOpen ? <X className="w-5 h-5 text-cyan-400" /> : <Menu className="w-5 h-5 text-cyan-400" />}
+          {mobileMenuOpen ? <X className="w-5 h-5 text-cyan-400 cursor-pointer" /> : <Menu className="w-5 h-5 cursor-pointer text-cyan-400" />}
         </button>
       </div>
 
@@ -244,18 +244,18 @@ const Navbar = () => {
 
       {mobileMenuOpen && (
         <div className="absolute right-4 top-16 w-48 bg-gray-900 border border-gray-700 rounded-lg shadow-lg flex flex-col py-2">
-          <button onClick={() => { navigate("/"); setMobileMenuOpen(false); }} className="px-4 py-2 hover:bg-gray-800">Home</button>
-          <button onClick={() => { navigate("/about"); setMobileMenuOpen(false); }} className="px-4 py-2 hover:bg-gray-800">About</button>
-          <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className="px-4 py-2 hover:bg-gray-800">Contact</button>
+          <button onClick={() => { navigate("/"); setMobileMenuOpen(false); }} className="px-4 py-2 text-white cursor-pointer hover:bg-gray-800">Home</button>
+          <button onClick={() => { navigate("/about"); setMobileMenuOpen(false); }} className="px-4 text-white cursor-pointer py-2 hover:bg-gray-800">About</button>
+          <button onClick={() => { navigate("/contact"); setMobileMenuOpen(false); }} className="px-4 text-white cursor-pointer py-2 hover:bg-gray-800">Contact</button>
 
           {user ? (
             <div className="relative px-3 py-2">
-              <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="w-full px-3 py-2 bg-red-600 rounded-lg text-white">Logout</button>
+              <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="w-full px-3 py-2 bg-red-600 rounded-lg cursor-pointer text-white">Logout</button>
               <Toast notification={notification} className="min-w-[160px] left-0" />
             </div>
           ) : (
             <div className="relative px-3 py-2">
-              <button onClick={() => { navigate("/login"); setMobileMenuOpen(false); }} className="w-full px-3 py-2 bg-cyan-600 rounded-lg text-white">Login / Signup</button>
+              <button onClick={() => { navigate("/login"); setMobileMenuOpen(false); }} className="w-full px-3 py-2 bg-cyan-600 rounded-lg cursor-pointer text-white">Login / Signup</button>
               <Toast notification={notification} className="min-w-[160px] left-0" />
             </div>
           )}
