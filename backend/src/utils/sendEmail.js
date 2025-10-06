@@ -2,7 +2,6 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-// ✅ Transporter setup (Render-compatible)
 export const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -11,7 +10,6 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-// ✅ Send email function
 export const sendEmail = async (to, name, otp, subject) => {
   try {
     const htmlContent = `
@@ -111,8 +109,8 @@ export const sendEmail = async (to, name, otp, subject) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent successfully:", info.messageId);
+    console.log("Email sent successfully:", info.messageId);
   } catch (error) {
-    console.error("❌ Error sending email:", error);
+    console.error("Error sending email:", error);
   }
 };

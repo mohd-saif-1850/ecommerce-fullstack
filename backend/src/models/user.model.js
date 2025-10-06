@@ -44,7 +44,8 @@ const userSchema = new Schema({
     cart : [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Item"
+            ref: "Item",
+            default : []
         }
     ]
 },{timestamps: true})
