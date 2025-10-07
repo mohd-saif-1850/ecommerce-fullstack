@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Analytics } from '@vercel/analytics/react';
 import Navbar from "./pages/Navbar";
 import Home from "./pages/Home";
 import ItemPage from "./pages/Items";
@@ -18,6 +19,7 @@ function App() {
         <Route path="/verify-otp" element={<VerifyOtp />} />
 
       </Routes>
+      <Analytics/>
     </div>
   );
 }
